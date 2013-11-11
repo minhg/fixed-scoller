@@ -5,6 +5,7 @@
     var $this = this,
         fixedheight,
         height,
+        scrollTop,
         direction = 1;
 
     settings = $.extend({}, $.fn.fixedScroller.settings, settings);
@@ -19,11 +20,12 @@
         fixedHeight += settings.buffer;
 
       height = $(window).height() - fixedHeight;
+      scrollTop = $(document).scrollTop() + height * direction;
 
       if (settings.animate) {
-        $("html, body").animate({ scrollTop: height });
+        $("html, body").animate({ scrollTop: scrollTop });
       } else {
-        return $(document).scrollTop($(document).scrollTop() + height * direction);
+        return $(document).scrollTop(scrollTop);
       }
     }
 
@@ -48,6 +50,6 @@
   $.fn.fixedScroller.settings = {
     speed: 1,
     buffer: 30,
-    animate: false
+    animate: true
   };
 })(jQuery);
