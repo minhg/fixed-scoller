@@ -1,0 +1,23 @@
+body {
+	margin: 0;
+	padding: 0;
+}
+
+header {
+	background: #fff; 
+	position: fixed;
+	height: 100px; 
+	width: 100%;
+	top: 0;
+	
+	border: 1px solid rgba(0, 0, 0, 0.3)
+}
+
+p {
+	margin: 0 0 1em 0;
+}
+
+.content {
+	margin-top: 100px;
+	padding-top: 1em; 
+}
