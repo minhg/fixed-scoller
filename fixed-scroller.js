@@ -10,10 +10,8 @@
 
     settings = $.extend({}, $.fn.fixedScroller.settings, settings);
 
-    function calcScroll(e, direction) {
+    function calcScroll(direction) {
       
-      e.preventDefault();
-
       fixedHeight = $this.outerHeight(true);
 
       if (settings.buffer > 0)
@@ -22,24 +20,30 @@
       height = $(window).height() - fixedHeight;
       scrollTop = $(document).scrollTop() + height * direction;
 
-      if (settings.animate) {
-        $("html, body").animate({ scrollTop: scrollTop });
-      } else {
-        return $(document).scrollTop(scrollTop);
-      }
+      animateScroll(scrollTop);
+
+      return false;
+    }
+
+    function animateScroll(scrollTop) {
+      $("html, body").animate({
+        scrollTop: scrollTop
+      }, parseInt(settings.speed, 10));
     }
 
     $(document).keydown(function(e) {
 
+      if ($('html, body').is(':animated')) return false;
+
       switch(e.keyCode){
         case 32: //space
-          calcScroll(e, -1);
+          calcScroll(1);
           break;
         case 33: //pgup
-          calcScroll(e, -1);
+          calcScroll(-1);
           break;
         case 34: //pgdown
-          calcScroll(e, 1);
+          calcScroll(1);
           break;
       }
       return true;
@@ -48,8 +52,7 @@
   };
 
   $.fn.fixedScroller.settings = {
-    speed: 1,
-    buffer: 30,
-    animate: true
+    speed: 200,
+    buffer: 10
   };
 })(jQuery);
