@@ -3,6 +3,7 @@
   $.fn.fixedScroller = function(settings) {
 
     var $this = this,
+        $body = $('body'),
         fixedheight,
         height,
         scrollTop,
@@ -20,7 +21,11 @@
       height = $(window).height() - fixedHeight;
       scrollTop = $(document).scrollTop() + height * direction;
 
-      animateScroll(scrollTop);
+      if (settings.transform) {
+        transformScroll(scrollTop);
+      } else {
+        animateScroll(scrollTop);
+      }
 
       return false;
     }
@@ -29,6 +34,17 @@
       $("html, body").animate({
         scrollTop: scrollTop
       }, parseInt(settings.speed, 10));
+    }
+
+    function transformScroll(scrollTop) {
+      $body.css('transition', '.2s');
+      $body.css('transform', 'translate3d(0, ' + scrollTop + 'px, 0)');
+      $body.bind('transitionend webkitTransitionEnd', function(event) {
+          $body
+          .scrollTop(scrollTop)
+          .css({'transition': '', 'transform': ''})
+          .unbind(event);
+      });
     }
 
     $(document).keydown(function(e) {
@@ -53,6 +69,7 @@
 
   $.fn.fixedScroller.settings = {
     speed: 200,
-    buffer: 10
+    buffer: 10,
+    transform: true
   };
 })(jQuery);
